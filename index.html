@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Booking Pro Max</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+body {
+  font-family: Poppins;
+  background: linear-gradient(135deg,#000428,#004e92);
+  color: white;
+  text-align: center;
+}
+
+.card {
+  background: rgba(255,255,255,0.1);
+  padding: 20px;
+  border-radius: 15px;
+  margin: 15px auto;
+  width: 300px;
+}
+
+input, select {
+  width: 90%;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  padding: 10px;
+  width: 90%;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 8px;
+  border: none;
+}
+
+.admin {
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🔥 Smart Booking System</h1>
+
+<div class="card">
+<h3>Book Appointment</h3>
+
+<input id="name" placeholder="Name">
+<input id="date" type="date">
+
+<select id="service">
+<option>Haircut</option>
+<option>Facial</option>
+<option>Consultation</option>
+</select>
+
+<button onclick="book()">📲 Book on WhatsApp</button>
+<button onclick="pay()">💳 Pay Now</button>
+</div>
+
+<div class="card">
+<button onclick="showAdmin()">🔐 Admin Panel</button>
+</div>
+
+<div class="card admin" id="adminPanel">
+<h3>📊 Bookings</h3>
+<ul id="data"></ul>
+</div>
+
+<script>
+
+// 📲 Booking
+function book() {
+  let name = document.getElementById("name").value;
+  let date = document.getElementById("date").value;
+  let service = document.getElementById("service").value;
+
+  let msg = `Hello, I want to book.%0AName:${name}%0ADate:${date}%0AService:${service}`;
+  window.open(`https://wa.me/917895252570?text=${msg}`);
+
+  save(name, date, service);
+  notify(name);
+}
+
+// 💳 Payment
+function pay() {
+  window.open("upi://pay?pa=7895252570@fam");
+}
+
+// 💾 Fake Database
+function save(name, date, service) {
+  let data = JSON.parse(localStorage.getItem("bookings") || "[]");
+  data.push({name, date, service});
+  localStorage.setItem("bookings", JSON.stringify(data));
+}
+
+// 📊 Admin Panel
+function showAdmin() {
+  document.getElementById("adminPanel").style.display = "block";
+
+  let data = JSON.parse(localStorage.getItem("bookings") || "[]");
+  let list = document.getElementById("data");
+  list.innerHTML = "";
+
+  data.forEach(d => {
+    let li = document.createElement("li");
+    li.innerText = `${d.name} - ${d.date} - ${d.service}`;
+    list.appendChild(li);
+  });
+}
+
+// 🔔 Notification Trick
+function notify(name) {
+  alert("New Booking from " + name);
+}
+
+// 🤖 Auto Reply (Fake AI Feel)
+function autoReply() {
+  let replies = [
+    "Hello 🙌 Appointment ke liye details bheje",
+    "Thanks! Hum jaldi reply karenge",
+    "Booking confirm karne ke liye WhatsApp check karein"
+  ];
+  return replies[Math.floor(Math.random()*replies.length)];
+}
+
+</script>
+
+</body>
+  </html>
